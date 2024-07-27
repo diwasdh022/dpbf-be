@@ -6,6 +6,7 @@ const tokenGenerate = require("../helpers/tokenGenetator");
 const { loggerInfoMessage } = require("../helpers/loggerMessage");
 const nodemailer = require("nodemailer");
 const moment = require("moment-timezone");
+const { blacklistToken } = require("../helpers/tokenBlacklist");
 
 module.exports = {
     // @Desc    ADMIN - Add new admin
@@ -73,8 +74,22 @@ module.exports = {
                     });
                 adminData["password"] = await bcrypt.hash(req.body["password"], 10);
             }
+            if (req.body["profile_image"] || req.file) {
+                admin["profile_image"] = req.body["profile_image"]
+                    ? req.body["profile_image"]
+                    : req.file.filename;
+            }
             if (!admin) return res.status(404).json({ success: false, message: "Admin not found" });
-            await Admin.updateOne({ _id: adminId }, adminData);
+            await Admin.updateOne(
+                { _id: adminId },
+                {
+                    name: adminData.name,
+                    email: adminData.email,
+                    contact: adminData.contact,
+                    designation: admin.designation,
+                    profile_image: admin["profile_image"],
+                },
+            );
             loggerInfoMessage(req.admin["name"], "Admin updated", admin.name);
             return res.json({ success: true, message: "Admin account updated successfully" });
         } catch (error) {
@@ -194,7 +209,26 @@ module.exports = {
 
             const token = await tokenGenerate(admin, stay);
 
-            return res.json({ success: true, message: "Login success", data: token });
+            return res.json({ success: true, message: "Login success", data: token, user: admin });
+        } catch (error) {
+            return next(error);
+        }
+    },
+
+    logout: async (req, res, next) => {
+        try {
+            const token = req.body.token; // Assuming Bearer token format
+            if (!token) {
+                return res
+                    .status(httpStatus.BAD_REQUEST)
+                    .json({ success: false, message: "No token provided" });
+            }
+
+            // Optional: Blacklist the token
+            await blacklistToken(token);
+
+            // Send a response indicating successful logout
+            return res.json({ success: true, message: "Logout successful" });
         } catch (error) {
             return next(error);
         }

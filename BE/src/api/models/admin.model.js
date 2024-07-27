@@ -14,6 +14,9 @@ const Admin = new mongoose.Schema(
             type: String,
             required: true,
         },
+        profile_image: {
+            type: String,
+        },
         email: {
             type: String,
             match: /^\S+@\S+\.\S+$/,

@@ -1,21 +1,14 @@
 /*!
 
-=========================================================
-* Argon Dashboard React - v1.1.0
-=========================================================
 
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
+* Coded by Deepak Prakash Baskota Foundation
 
 =========================================================
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 
 // reactstrap components
 import {
@@ -28,40 +21,39 @@ import {
     Input,
     Container,
     Row,
-    Col
+    Col,
 } from "reactstrap";
 // core components
 import UserHeader from "components/Headers/UserHeader.js";
-import EditHeader from "../../components/Headers/EditHeader";
-import {edit} from "../../network/ApiAxios";
+import EditHeader from "../components/Headers/EditHeader";
+import { edit } from "../network/ApiAxios";
 
-const EditProfile = props => {
-
+const EditProfile = (props) => {
     let user = JSON.parse(localStorage.getItem("user"));
 
     const [name, setName] = useState(user.name);
     const [email, setEmail] = useState(user.email);
-    const [isTestUser, setIsTestUser] = useState(false);
-
-    useEffect(() => {
-        if (JSON.parse(localStorage.getItem("user")).email === "test@test.com") {
-            setIsTestUser(true);
-        }
-    }, []);
+    const [phonenumber, setPhonenumber] = useState(user.contact);
 
     const editUser = async () => {
-        const response = await edit(user._id, name, email);
+        const response = await edit(user._id, name, email, phonenumber, user.designation);
         const { data } = response;
         if (data.success) {
-            user = {...user, name, email}
+            user = {
+                _id: user._id,
+                name,
+                email,
+                contact: phonenumber,
+                designation: user.designation,
+            };
             localStorage.setItem("user", JSON.stringify(user));
             props.history.push("/admin/user-profile");
         }
-    }
+    };
 
     return (
         <>
-            <EditHeader/>
+            <EditHeader />
             {/* Page content */}
             <Container className="mt--7" fluid>
                 <Row>
@@ -71,7 +63,6 @@ const EditProfile = props => {
                                 <Row className="align-items-center">
                                     <Col xs="8">
                                         <h3 className="mb-0">My account</h3>
-                                        {isTestUser ? <h5>You are not allowed to edit the test user. Create another user to test this functionality</h5> : null}
                                     </Col>
                                     <Col className="text-right" xs="4">
                                         <Button
@@ -79,7 +70,6 @@ const EditProfile = props => {
                                             href="#pablo"
                                             onClick={editUser}
                                             size="sm"
-                                            disabled={isTestUser}
                                         >
                                             Save
                                         </Button>
@@ -106,7 +96,7 @@ const EditProfile = props => {
                                                         value={name}
                                                         id="input-username"
                                                         placeholder="Username"
-                                                        onChange={e => setName(e.target.value)}
+                                                        onChange={(e) => setName(e.target.value)}
                                                         type="text"
                                                     />
                                                 </FormGroup>
@@ -123,8 +113,30 @@ const EditProfile = props => {
                                                         className="form-control-alternative"
                                                         id="input-email"
                                                         value={email}
-                                                        onChange={e => setEmail(e.target.value)}
+                                                        onChange={(e) => setEmail(e.target.value)}
                                                         type="email"
+                                                    />
+                                                </FormGroup>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col lg="6">
+                                                <FormGroup>
+                                                    <label
+                                                        className="form-control-label"
+                                                        htmlFor="input-username"
+                                                    >
+                                                        Phone Number
+                                                    </label>
+                                                    <Input
+                                                        className="form-control-alternative"
+                                                        value={phonenumber}
+                                                        id="input-username"
+                                                        placeholder="Phone Number"
+                                                        onChange={(e) =>
+                                                            setPhonenumber(e.target.value)
+                                                        }
+                                                        type="text"
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -137,7 +149,7 @@ const EditProfile = props => {
                 </Row>
             </Container>
         </>
-);
-}
+    );
+};
 
 export default EditProfile;

@@ -19,7 +19,9 @@ async function seedAdmin() {
     };
     const password = await bcrypt.hash(adminData.password, 10);
     adminData.password = password;
-    await UserModel.create(adminData);
+    const admin = await UserModel.findOne({ email: adminData.email });
+    if (admin) await UserModel.updateOne({ _id: admin._id }, adminData);
+    else await UserModel.create(adminData);
 }
 
 seedAdmin()

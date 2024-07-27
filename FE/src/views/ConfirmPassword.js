@@ -1,21 +1,14 @@
 /*!
 
-=========================================================
-* Argon Dashboard React - v1.1.0
-=========================================================
 
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
+* Coded by Deepak Prakash Baskota Foundation
 
 =========================================================
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, {useState} from "react";
+import React, { useState } from "react";
 
 // reactstrap components
 import {
@@ -30,15 +23,14 @@ import {
     InputGroupText,
     InputGroup,
     Row,
-    Col
+    Col,
 } from "reactstrap";
-import {confirmReset, forgotPassword, login} from "../../network/ApiAxios";
+import { confirmReset, forgotPassword, login } from "../network/ApiAxios";
 import Toast from "react-bootstrap/Toast";
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-const ConfirmPassword = props => {
-
-    const {id} = useParams();
+const ConfirmPassword = (props) => {
+    const { id } = useParams();
 
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -50,13 +42,13 @@ const ConfirmPassword = props => {
             return;
         }
         const response = await confirmReset(id, password);
-        const {data} = response;
+        const { data } = response;
         if (data.success) {
             props.history.push("/auth/reset-success");
         } else {
             setError(data.msg);
         }
-    }
+    };
 
     return (
         <>
@@ -68,11 +60,15 @@ const ConfirmPassword = props => {
                                 <InputGroup className="input-group-alternative">
                                     <InputGroupAddon addonType="prepend">
                                         <InputGroupText>
-                                            <i className="ni ni-lock-circle-open"/>
+                                            <i className="ni ni-lock-circle-open" />
                                         </InputGroupText>
                                     </InputGroupAddon>
-                                    <Input placeholder="Password" type="password" autoComplete="new-password" value={password}
-                                           onChange={e => setPassword(e.target.value)}
+                                    <Input
+                                        placeholder="Password"
+                                        type="password"
+                                        autoComplete="new-password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
                                     />
                                 </InputGroup>
                             </FormGroup>
@@ -80,23 +76,33 @@ const ConfirmPassword = props => {
                                 <InputGroup className="input-group-alternative">
                                     <InputGroupAddon addonType="prepend">
                                         <InputGroupText>
-                                            <i className="ni ni-lock-circle-open"/>
+                                            <i className="ni ni-lock-circle-open" />
                                         </InputGroupText>
                                     </InputGroupAddon>
-                                    <Input placeholder="Confirm Password" type="password" autoComplete="new-password" value={confirmPassword}
-                                           onChange={e => setConfirmPassword(e.target.value)}
+                                    <Input
+                                        placeholder="Confirm Password"
+                                        type="password"
+                                        autoComplete="new-password"
+                                        value={confirmPassword}
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
                                     />
                                 </InputGroup>
                             </FormGroup>
-                            {error ?
+                            {error ? (
                                 <div className="text-muted font-italic">
                                     <small>
                                         error:{" "}
                                         <span className="text-red font-weight-700">{error}</span>
                                     </small>
-                                </div> : null }
+                                </div>
+                            ) : null}
                             <div className="text-center">
-                                <Button className="my-4" color="primary" type="button" onClick={confirm}>
+                                <Button
+                                    className="my-4"
+                                    color="primary"
+                                    type="button"
+                                    onClick={confirm}
+                                >
                                     Reset Password
                                 </Button>
                             </div>
@@ -106,6 +112,6 @@ const ConfirmPassword = props => {
             </Col>
         </>
     );
-}
+};
 
 export default ConfirmPassword;

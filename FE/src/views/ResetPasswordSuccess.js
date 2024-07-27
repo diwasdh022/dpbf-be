@@ -1,15 +1,14 @@
-import React, {useEffect, useState} from 'react';
-import { useParams } from 'react-router-dom';
-import {confirmRegister} from "../../network/ApiAxios";
-import {Card, CardBody, Col} from "reactstrap";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { confirmRegister } from "../network/ApiAxios";
+import { Card, CardBody, Col } from "reactstrap";
 
-const ResetPasswordSuccess = props => {
-
+const ResetPasswordSuccess = (props) => {
     useEffect(() => {
         setTimeout(() => {
             props.history.push("/auth/login");
         }, 5000);
-    }, [])
+    }, []);
 
     return (
         <>
@@ -23,7 +22,7 @@ const ResetPasswordSuccess = props => {
                 </Card>
             </Col>
         </>
-    )
+    );
 };
 
 export default ResetPasswordSuccess;

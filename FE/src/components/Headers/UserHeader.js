@@ -1,14 +1,7 @@
 /*!
 
-=========================================================
-* Argon Dashboard React - v1.1.0
-=========================================================
 
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
+* Coded by Deepak Prakash Baskota Foundation
 
 =========================================================
 
@@ -18,11 +11,10 @@
 import React from "react";
 
 // reactstrap components
-import {Button, Container, Row, Col} from "reactstrap";
-import {useHistory} from "react-router-dom";
+import { Button, Container, Row, Col } from "reactstrap";
+import { useHistory } from "react-router-dom";
 
 const UserHeader = () => {
-
     const username = JSON.parse(localStorage.getItem("user")).name;
     const history = useHistory();
 
@@ -32,26 +24,22 @@ const UserHeader = () => {
                 className="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
                 style={{
                     minHeight: "600px",
-                    backgroundImage:
-                        "url(" + require("assets/img/theme/profile-cover.jpg") + ")",
+                    backgroundImage: "url(" + require("assets/img/theme/profile-cover.jpg") + ")",
                     backgroundSize: "cover",
-                    backgroundPosition: "center top"
+                    backgroundPosition: "center top",
                 }}
             >
                 {/* Mask */}
-                <span className="mask bg-gradient-default opacity-8"/>
+                <span className="mask bg-gradient-default opacity-8" />
                 {/* Header container */}
                 <Container className="d-flex align-items-center" fluid>
                     <Row>
-                        <Col lg="7" md="10">
+                        <Col lg="12" md="12">
                             <h1 className="display-2 text-white">Hello {username}</h1>
-                            <p className="text-white mt-0 mb-5">
-                                This is your profile page. You can see the progress you've
-                                made with your work and manage your projects or assigned tasks
-                            </p>
+                            <p className="text-white mt-0 mb-5">This is your profile page.</p>
                             <Button
                                 color="info"
-                                onClick={() => history.push('/admin/edit-profile')}
+                                onClick={() => history.push("/admin/edit-profile")}
                             >
                                 Edit profile
                             </Button>
@@ -61,6 +49,6 @@ const UserHeader = () => {
             </div>
         </>
     );
-}
+};
 
 export default UserHeader;

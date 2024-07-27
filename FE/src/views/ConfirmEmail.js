@@ -1,11 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import { useParams } from 'react-router-dom';
-import {confirmRegister} from "../../network/ApiAxios";
-import {Card, CardBody, Col} from "reactstrap";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { confirmRegister } from "../network/ApiAxios";
+import { Card, CardBody, Col } from "reactstrap";
 
-const ConfirmEmail = props => {
-
-    const {id} = useParams();
+const ConfirmEmail = (props) => {
+    const { id } = useParams();
     const [valid, setValid] = useState(true);
 
     useEffect(() => {
@@ -14,19 +13,19 @@ const ConfirmEmail = props => {
         } else {
             const runAsync = async () => {
                 const response = await confirmRegister(id);
-                const {data} = response;
+                const { data } = response;
                 console.log(data);
                 if (!data.success) {
                     setValid(false);
                 } else {
                     setTimeout(() => {
-                        props.history.push('/auth/login');
+                        props.history.push("/auth/login");
                     }, 5000);
                 }
-            }
+            };
             runAsync();
         }
-    }, [])
+    }, []);
 
     return (
         <>
@@ -34,13 +33,17 @@ const ConfirmEmail = props => {
                 <Card className="bg-secondary shadow border-0">
                     <CardBody className="px-lg-5 py-lg-5">
                         <div className="text-center mb-4">
-                            <h1>{valid ? "Email confirmed! You will be redirected to login..." : "Something went wrong!"}</h1>
+                            <h1>
+                                {valid
+                                    ? "Email confirmed! You will be redirected to login..."
+                                    : "Something went wrong!"}
+                            </h1>
                         </div>
                     </CardBody>
                 </Card>
             </Col>
         </>
-    )
+    );
 };
 
 export default ConfirmEmail;
